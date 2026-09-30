@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Solfège Piano</title>
+  <meta name="description" content="Entraînement au solfège pour le piano : lecture de notes et reconnaissance des tonalités, en français, chronométré." />
+  <meta name="theme-color" content="#4c6ef5" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="icons/icon.svg" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Solfège" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <button id="backBtn" class="icon-btn" aria-label="Retour" hidden>&lsaquo;</button>
+    <h1 class="topbar-title" id="screenTitle">Solfège Piano</h1>
+    <button id="settingsBtn" class="icon-btn" aria-label="Réglages">&#9881;</button>
+  </header>
+
+  <main id="main">
+    <!-- ACCUEIL -->
+    <section id="home" class="screen">
+      <p class="tagline">Entraîne-toi au solfège, quelques minutes par jour.</p>
+      <div class="cards">
+        <button class="card" data-exercise="notes">
+          <span class="card-glyph">&#119070;</span>
+          <span class="card-body">
+            <span class="card-title">Lecture de notes</span>
+            <span class="card-sub" id="sub-notes">Nomme les notes sur la portée</span>
+          </span>
+          <span class="card-go">Commencer &rsaquo;</span>
+        </button>
+        <button class="card" data-exercise="scales">
+          <span class="card-glyph">&#119047;&#9839;</span>
+          <span class="card-body">
+            <span class="card-title">Reconnaître la gamme</span>
+            <span class="card-sub" id="sub-scales">Trouve la tonalité d'après l'armure</span>
+          </span>
+          <span class="card-go">Commencer &rsaquo;</span>
+        </button>
+      </div>
+      <p class="hint">Astuce : ajoute ce site à ton écran d'accueil pour l'ouvrir comme une appli.</p>
+    </section>
+
+    <!-- EXERCICE -->
+    <section id="exercise" class="screen" hidden>
+      <div class="hud">
+        <div class="hud-item">
+          <span class="hud-label">Temps</span>
+          <span class="hud-value" id="timer">0:00.0</span>
+        </div>
+        <div class="hud-item hud-progress">
+          <div class="progress-bar"><span id="progressFill"></span></div>
+          <span class="hud-value" id="progressText">0/0</span>
+        </div>
+        <div class="hud-item">
+          <span class="hud-label">Niveau</span>
+          <span class="hud-value" id="levelBadge">1</span>
+        </div>
+      </div>
+      <div class="stage-wrap">
+        <div class="stage" id="stage" aria-label="Partition"></div>
+      </div>
+      <p class="prompt" id="prompt"></p>
+      <div class="answers" id="answers"></div>
+    </section>
+
+    <!-- REGLAGES -->
+    <section id="settings" class="screen" hidden>
+      <div class="setting">
+        <label class="setting-label" for="set-level">Niveau</label>
+        <select id="set-level" class="select">
+          <option value="auto">Automatique (progressif)</option>
+          <option value="1">1 — notes sur la portée</option>
+          <option value="2">2 — + 1 ligne supplémentaire</option>
+          <option value="3">3 — + 2 lignes supplémentaires</option>
+          <option value="4">4 — + altérations (dièses / bémols)</option>
+        </select>
+        <p class="setting-help">En automatique, le niveau monte quand tu réussis sans faute et redescend si c'est difficile.</p>
+      </div>
+      <div class="setting">
+        <label class="setting-label" for="set-clef">Clé (lecture de notes)</label>
+        <select id="set-clef" class="select">
+          <option value="both">Les deux (sol + fa)</option>
+          <option value="treble">Clé de sol seulement</option>
+          <option value="bass">Clé de fa seulement</option>
+        </select>
+      </div>
+      <div class="setting">
+        <label class="setting-label" for="set-count">Notes par manche</label>
+        <select id="set-count" class="select">
+          <option value="4">4</option>
+          <option value="6">6</option>
+          <option value="8">8</option>
+          <option value="10">10</option>
+        </select>
+      </div>
+      <div class="setting setting-row">
+        <label class="setting-label" for="set-sound">Sons</label>
+        <input type="checkbox" id="set-sound" class="switch" />
+      </div>
+      <div class="setting setting-row">
+        <label class="setting-label" for="set-vibrate">Vibration (erreur)</label>
+        <input type="checkbox" id="set-vibrate" class="switch" />
+      </div>
+      <button id="resetStats" class="btn ghost">Réinitialiser mes records</button>
+    </section>
+  </main>
+
+  <!-- RESULTAT -->
+  <div id="overlay" class="overlay" hidden>
+    <div class="modal">
+      <h2 id="resultTitle">Manche terminée</h2>
+      <div class="result-stats">
+        <div><span class="big" id="resultTime">0:00.0</span><span class="small">temps</span></div>
+        <div><span class="big" id="resultErrors">0</span><span class="small">erreurs</span></div>
+      </div>
+      <p id="resultNote" class="result-note"></p>
+      <div class="modal-actions">
+        <button id="againBtn" class="btn primary">Continuer</button>
+        <button id="homeBtn" class="btn ghost">Accueil</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="loaderror" class="loaderror" hidden>
+    Impossible de charger la bibliothèque de notation. Vérifie ta connexion et recharge la page.
+  </div>
+
+  <script defer src="vendor/vexflow.js"></script>
+  <script defer src="js/theory.js"></script>
+  <script defer src="js/render.js"></script>
+  <script defer src="js/notes.js"></script>
+  <script defer src="js/scales.js"></script>
+  <script defer src="js/app.js"></script>
+</body>
+</html>

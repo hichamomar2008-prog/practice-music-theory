@@ -1,0 +1,290 @@
+/* Solfège Piano — feuille de style mobile-first */
+
+:root {
+  --bg: #f4f4f8;
+  --surface: #ffffff;
+  --surface-2: #ececf3;
+  --fg: #1b1b1f;
+  --muted: #6b6b78;
+  --line: #e0e0e8;
+  --accent: #4c6ef5;
+  --accent-ink: #ffffff;
+  --ok: #17a34a;
+  --ok-bg: #dcfce4;
+  --no: #e23b3b;
+  --no-bg: #fde3e3;
+  --radius: 16px;
+  --shadow: 0 2px 10px rgba(20, 20, 40, 0.08);
+  --tap: 54px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f0f14;
+    --surface: #1a1a22;
+    --surface-2: #23232e;
+    --fg: #ececf2;
+    --muted: #9a9aa8;
+    --line: #2c2c38;
+    --accent: #8aa0ff;
+    --accent-ink: #0f0f14;
+    --ok: #4ade80;
+    --ok-bg: #10331f;
+    --no: #ff7477;
+    --no-bg: #3a1618;
+    --shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+  }
+}
+
+* { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  touch-action: manipulation;
+}
+
+button { font-family: inherit; }
+
+/* --- Barre du haut ------------------------------------------------------- */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: calc(env(safe-area-inset-top) + 10px) 14px 10px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.topbar-title {
+  flex: 1;
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  text-align: center;
+}
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 12px;
+  background: var(--surface-2);
+  color: var(--fg);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.icon-btn[hidden] { display: none; }
+
+/* --- Écrans -------------------------------------------------------------- */
+#main {
+  flex: 1;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 16px 16px calc(env(safe-area-inset-bottom) + 16px);
+  display: flex;
+  flex-direction: column;
+}
+.screen { flex: 1; display: flex; flex-direction: column; }
+.screen[hidden] { display: none; }
+
+.tagline { color: var(--muted); margin: 6px 2px 18px; }
+
+/* --- Cartes d'accueil ---------------------------------------------------- */
+.cards { display: flex; flex-direction: column; gap: 14px; }
+.card {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  grid-template-rows: auto auto;
+  gap: 2px 14px;
+  align-items: center;
+  text-align: left;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  color: var(--fg);
+  cursor: pointer;
+}
+.card:active { transform: scale(0.99); }
+.card-glyph {
+  grid-row: 1 / 3;
+  font-size: 2rem;
+  text-align: center;
+  color: var(--accent);
+}
+.card-title { font-size: 1.15rem; font-weight: 700; }
+.card-sub { color: var(--muted); font-size: 0.92rem; }
+.card-go {
+  grid-column: 2;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-top: 6px;
+}
+.hint { color: var(--muted); font-size: 0.85rem; margin-top: auto; padding-top: 20px; }
+
+/* --- HUD (temps / progression / niveau) ---------------------------------- */
+.hud {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 4px 14px;
+}
+.hud-item { display: flex; flex-direction: column; gap: 2px; align-items: center; }
+.hud-item.hud-progress { flex: 1; align-items: stretch; }
+.hud-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+.hud-value { font-size: 1.15rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+#timer.warn { color: #d98324; }
+#timer.late { color: var(--no); }
+.progress-bar {
+  height: 8px;
+  background: var(--surface-2);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+.progress-bar span {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: var(--accent);
+  transition: width 0.2s ease;
+}
+#progressText { font-size: 0.85rem; color: var(--muted); font-weight: 600; text-align: center; }
+#levelBadge {
+  min-width: 30px;
+  text-align: center;
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-radius: 10px;
+  padding: 2px 8px;
+}
+
+/* --- Partition ----------------------------------------------------------- */
+.stage-wrap {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 8px 6px;
+  margin-bottom: 12px;
+}
+.stage { width: 100%; overflow-x: auto; display: flex; justify-content: center; }
+.stage svg { display: block; }
+
+.prompt { text-align: center; font-size: 1.05rem; font-weight: 600; margin: 4px 0 14px; min-height: 1.4em; }
+
+/* --- Réponses ------------------------------------------------------------ */
+.answers { margin-top: auto; display: flex; flex-direction: column; gap: 10px; }
+
+.acc-row { display: flex; justify-content: center; gap: 10px; }
+.acc-btn { flex: 0 0 auto; width: 60px; font-size: 1.5rem; }
+.acc-btn.active { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+
+.note-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+.note-btn { font-size: 1.15rem; font-weight: 700; padding: 10px 3px; }
+@media (max-width: 340px) { .note-btn { font-size: 1rem; } }
+
+.choice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.choice-btn { font-size: 1.05rem; font-weight: 600; min-height: 60px; }
+
+.btn {
+  min-width: 0;
+  min-height: var(--tap);
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--fg);
+  cursor: pointer;
+  transition: transform 0.05s ease, background 0.15s ease, border-color 0.15s ease;
+}
+.btn:active { transform: scale(0.96); }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 700; }
+.btn.ghost { background: transparent; }
+
+.flash-ok { background: var(--ok-bg) !important; border-color: var(--ok) !important; color: var(--ok) !important; }
+.flash-no { background: var(--no-bg) !important; border-color: var(--no) !important; color: var(--no) !important; animation: shake 0.3s; }
+.choice-btn.correct { background: var(--ok-bg); border-color: var(--ok); color: var(--ok); }
+.choice-btn.wrong { background: var(--no-bg); border-color: var(--no); color: var(--no); }
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+/* --- Réglages ------------------------------------------------------------ */
+.setting { margin-bottom: 20px; }
+.setting-row { display: flex; align-items: center; justify-content: space-between; }
+.setting-label { display: block; font-weight: 600; margin-bottom: 8px; }
+.setting-row .setting-label { margin-bottom: 0; }
+.setting-help { color: var(--muted); font-size: 0.85rem; margin: 8px 0 0; }
+.select {
+  width: 100%;
+  min-height: var(--tap);
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--fg);
+  font-size: 1rem;
+}
+.switch { width: 52px; height: 30px; }
+
+/* --- Overlay résultat ---------------------------------------------------- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 10, 20, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 50;
+}
+.overlay[hidden] { display: none; }
+.modal {
+  width: 100%;
+  max-width: 360px;
+  background: var(--surface);
+  border-radius: 20px;
+  padding: 24px;
+  text-align: center;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+}
+.modal h2 { margin: 0 0 16px; font-size: 1.4rem; }
+.result-stats { display: flex; justify-content: center; gap: 32px; margin-bottom: 12px; }
+.result-stats .big { display: block; font-size: 1.8rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+.result-stats .small { color: var(--muted); font-size: 0.8rem; }
+.result-note { color: var(--accent); font-weight: 600; min-height: 1.2em; margin: 8px 0 18px; }
+.modal-actions { display: flex; flex-direction: column; gap: 10px; }
+
+/* --- Erreur de chargement ------------------------------------------------ */
+.loaderror {
+  position: fixed;
+  inset: auto 0 0 0;
+  background: var(--no);
+  color: #fff;
+  padding: 14px;
+  text-align: center;
+  z-index: 100;
+}
+.loaderror[hidden] { display: none; }

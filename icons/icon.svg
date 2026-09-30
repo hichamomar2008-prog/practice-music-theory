@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6b8afc"/>
+      <stop offset="1" stop-color="#3b5bdb"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+
+  <!-- Note (croche) -->
+  <g fill="#ffffff">
+    <ellipse cx="236" cy="212" rx="48" ry="35" transform="rotate(-18 236 212)"/>
+    <rect x="277" y="70" width="17" height="150" rx="7"/>
+    <path d="M294 74 C 356 96 356 150 322 178 C 342 140 330 104 294 100 Z"/>
+  </g>
+
+  <!-- Clavier de piano -->
+  <g transform="translate(96,300)">
+    <rect x="0"   y="0" width="64" height="150" rx="8" fill="#ffffff"/>
+    <rect x="64"  y="0" width="64" height="150" rx="8" fill="#ffffff"/>
+    <rect x="128" y="0" width="64" height="150" rx="8" fill="#ffffff"/>
+    <rect x="192" y="0" width="64" height="150" rx="8" fill="#ffffff"/>
+    <rect x="256" y="0" width="64" height="150" rx="8" fill="#ffffff"/>
+    <rect x="46"  y="0" width="36" height="92" rx="5" fill="#16213f"/>
+    <rect x="110" y="0" width="36" height="92" rx="5" fill="#16213f"/>
+    <rect x="238" y="0" width="36" height="92" rx="5" fill="#16213f"/>
+  </g>
+</svg>
